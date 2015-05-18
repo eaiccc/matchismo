@@ -48,6 +48,7 @@
 
 - (IBAction)touchCardButton:(UIButton *)sender {
     NSUInteger chosenButtonIndex = [self.cardButtons indexOfObject:sender];
+    NSLog(@"touchCardButton");
     [self.game chooseCardIndex:chosenButtonIndex];
     [self updateUI];
     //self.flipCount++;

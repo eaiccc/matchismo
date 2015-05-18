@@ -17,8 +17,8 @@
     }
     return _cards;
 }
--(void) addCard:(Card*)card atTop:(BOOL)atTop{
-    if(atTop){
+-(void) addCard:(Card*)card atTop:(BOOL)atTop1{
+    if(atTop1){
         [self.cards insertObject:card atIndex:0];
     }else{
         [self.cards addObject:card];
@@ -27,6 +27,7 @@
 -(void) addCard:(Card*)card{
     [self addCard:card atTop:NO];
 }
+
 -(Card *)drawRandomCard{
     Card *randomCard= nil;
     if([self.cards count]){
