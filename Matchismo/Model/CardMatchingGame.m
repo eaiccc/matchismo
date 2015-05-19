@@ -7,7 +7,10 @@
 //
 
 #import "CardMatchingGame.h"
-@interface CardMatchingGame()
+@interface CardMatchingGame(){
+    NSUInteger cardCount;
+    Deck* gameDeck;
+}
 @property (nonatomic, readwrite) NSInteger score;
 @property (nonatomic, strong) NSMutableArray* cards;
 @end
@@ -22,6 +25,8 @@
 -(instancetype)initWithCardCount:(NSUInteger)count usingDeck:(Deck*)deck{
     self = [super init];
     if(self){
+        cardCount = count;
+        gameDeck = deck;
         for (int i = 0; i<count ; i++){
             Card *card = [deck drawRandomCard];
             if(card){
@@ -69,5 +74,20 @@ static const int COST_TO_CHOOSE= 1;
     return (index< [self.cards count])?self.cards[index]:nil;
 }
 
+-(void)reset{
+    self.score = 0;
+    [self.cards removeAllObjects];
+    [self drawCards];
+}
 
+-(void)drawCards{
+    for (int i = 0; i<cardCount ; i++){
+        Card *card = [gameDeck drawRandomCard];
+        if(card){
+            [self.cards addObject:card];
+        }else{
+            break;
+        }
+    }
+}
 @end

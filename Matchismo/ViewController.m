@@ -16,6 +16,7 @@
 @property (nonatomic) int flipCount;
 @property (strong, nonatomic) Deck *deck;
 @property (strong, nonatomic)CardMatchingGame *game;
+- (IBAction)didClickNewGame:(id)sender;
 @property (strong, nonatomic) IBOutletCollection(UIButton) NSArray *cardButtons;
 @end
 
@@ -24,10 +25,22 @@
     if(!_game)_game = [[CardMatchingGame alloc]initWithCardCount:[self.cardButtons count] usingDeck:[self createDeck]];
     return _game;
 }
-/*-(Deck*)deck{
+
+- (IBAction)didClickNewGame:(id)sender {
+    [self.game reset];
+    self.scoreLabel.text = [NSString stringWithFormat:@"Score: %ld", (long)self.game.score];
+    for(UIButton *cardButton in self.cardButtons){
+        NSUInteger cardButtonIndex = [self.cardButtons indexOfObject:cardButton];
+        [cardButton setTitle:@"" forState:UIControlStateNormal];
+        Card * card= [self.game cardAtIndex:cardButtonIndex];
+        [cardButton setBackgroundImage:[self backgroundImageForCard:card] forState:UIControlStateNormal];
+        cardButton.enabled = YES;
+    }
+}
+-(Deck*)deck{
     if(!_deck)_deck = [self createDeck];
     return _deck;
-}*/
+}
 -(Deck*)createDeck{
     return [[PlayingCardDeck alloc]init];
 }
