@@ -7,11 +7,11 @@
 //
 
 #import "Card.h"
-
-@interface PlayingCard : Card
+#import "CardMatchingGame.h"
+@interface PlayingCard : Card<NSCopying>
 @property (strong, nonatomic) NSString* suit;
 @property (nonatomic) NSUInteger rank;
 +(NSArray*)validSuits;
 +(NSUInteger)maxRank;
-
+@property (atomic)PlayMode mode;
 @end

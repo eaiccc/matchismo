@@ -22,7 +22,7 @@
 
 @implementation ViewController
 -(CardMatchingGame*)game{
-    if(!_game)_game = [[CardMatchingGame alloc]initWithCardCount:[self.cardButtons count] usingDeck:[self createDeck]];
+    if(!_game)_game = [[CardMatchingGame alloc]initWithCardCount:[self.cardButtons count] usingDeck:[self createDeck] withMode:PlayMode2CardMatchPerfect];
     return _game;
 }
 

@@ -7,6 +7,7 @@
 //
 
 #import "CardMatchingGame.h"
+#import "PlayingCard.h"
 @interface CardMatchingGame(){
     NSUInteger cardCount;
     Deck* gameDeck;
@@ -22,19 +23,14 @@
     }
     return _cards;
 }
--(instancetype)initWithCardCount:(NSUInteger)count usingDeck:(Deck*)deck{
+-(instancetype)initWithCardCount:(NSUInteger)count usingDeck:(Deck*)deck withMode:(PlayMode)mode{
     self = [super init];
     if(self){
         cardCount = count;
         gameDeck = deck;
-        for (int i = 0; i<count ; i++){
-            Card *card = [deck drawRandomCard];
-            if(card){
-                [self.cards addObject:card];
-            }else{
-                self = nil;
-                break;
-            }
+        _mode = mode;
+        if (![self drawCards]) {
+            self = nil;
         }
     }
     return self;
@@ -79,15 +75,49 @@ static const int COST_TO_CHOOSE= 1;
     [self.cards removeAllObjects];
     [self drawCards];
 }
+-(BOOL)drawCards{
+    if (self.mode == PlayMode2CardMatchPerfect) {
+        return  [self drawCardsPairs];
+    }else{
+        return  [self drawCardsRandom];
+    }
 
--(void)drawCards{
+    return YES;
+}
+-(BOOL)drawCardsPairs{
+    for (int i = 0; i<cardCount ; i++){
+        Card *card = [gameDeck drawRandomCard];
+        if(card){
+            [self.cards addObject:card]; //add twice
+            [(PlayingCard*)card setMode:PlayMode2CardMatchPerfect];
+            PlayingCard* copyCard = [(PlayingCard*)card copy];
+            [copyCard setMode:PlayMode2CardMatchPerfect];
+            [self.cards addObject:copyCard];
+        }else{
+            return NO;
+            //break;
+        }
+    }
+    //shuffle it
+    for (NSUInteger i = 0; i< cardCount;  i++) {
+        NSUInteger nElements = cardCount -i;
+        NSUInteger  n = (arc4random() % nElements)+i;
+        [self.cards exchangeObjectAtIndex:i withObjectAtIndex:n];
+    }
+    return YES;
+}
+-(BOOL)drawCardsRandom{
     for (int i = 0; i<cardCount ; i++){
         Card *card = [gameDeck drawRandomCard];
         if(card){
             [self.cards addObject:card];
         }else{
-            break;
+            return NO;
+            //break;
         }
     }
+    return YES;
 }
+
+
 @end
